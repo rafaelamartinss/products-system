@@ -3,9 +3,12 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 
 class Product extends Model
 {
+    use Notifiable;
+
     protected $fillable = [
         'name',
         'value',
@@ -17,5 +20,10 @@ class Product extends Model
     public function category()
     {
         return $this->belongsTo(Category::class);
+    }
+
+    public function routeNotificationForSlack()
+    {
+        return 'https://hooks.slack.com/services/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';
     }
 }

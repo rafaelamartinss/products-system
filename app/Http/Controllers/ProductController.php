@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Category;
+use App\Notifications\NewProductSlack;
 use App\Product;
 use Illuminate\Http\Request;
 
@@ -57,6 +58,7 @@ class ProductController extends Controller
         ]);
 
         $category->products()->save($product);
+        $product->notify(new NewProductSlack());
 
         return redirect('/products')->with('success', 'Product saved!');
     }
