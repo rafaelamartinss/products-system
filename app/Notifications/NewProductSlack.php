@@ -11,14 +11,16 @@ class NewProductSlack extends Notification
 {
     use Queueable;
 
+    public $product;
+
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($product)
     {
-        //
+        $this->product = $product;
     }
 
     /**
@@ -40,8 +42,18 @@ class NewProductSlack extends Notification
      */
     public function toSlack($notifiable)
     {
+        $product = $this->product;
+
         return (new SlackMessage)
-                    ->content('Novo produto cadastrado.');
+                    ->content('Novo produto cadastrado.')
+                    ->attachment(function ($attachment) use ($product) {
+                        $attachment->title('Produto', $product->name)
+                               ->fields([
+                                    'Nome' => $product->name,
+                                    'Valor' => $product->value,
+                                    'Quantidade' => $product->quantity,
+                                ]);
+                    });
     }
 
     /**

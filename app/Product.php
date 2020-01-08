@@ -24,6 +24,6 @@ class Product extends Model
 
     public function routeNotificationForSlack()
     {
-        return 'https://hooks.slack.com/services/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';
+        return 'https://hooks.slack.com/services/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';
     }
 }

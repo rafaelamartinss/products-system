@@ -58,7 +58,7 @@ class ProductController extends Controller
         ]);
 
         $category->products()->save($product);
-        $product->notify(new NewProductSlack());
+        $product->notify(new NewProductSlack($product));
 
         return redirect('/products')->with('success', 'Product saved!');
     }
