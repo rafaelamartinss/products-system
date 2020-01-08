@@ -21,6 +21,11 @@ class CategoryPolicy
         return $user->is_admin === 1;
     }
 
+    public function store(User $user)
+    {
+        return $user->is_admin === 1;
+    }
+
     public function update(User $user)
     {
         return $user->is_admin === 1;

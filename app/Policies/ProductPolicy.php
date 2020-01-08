@@ -30,6 +30,11 @@ class ProductPolicy
         return $user->is_admin === 1;
     }
 
+    public function store(User $user)
+    {
+        return $user->is_admin === 1;
+    }
+
     public function delete(User $user)
     {
         return $user->is_admin === 1;
