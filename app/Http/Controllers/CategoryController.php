@@ -3,26 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Category;
-use App\Notifications\NewCategoryMail;
 use Illuminate\Http\Request;
+use App\Notifications\NewCategoryMail;
+use Illuminate\Support\Facades\Auth;
 
 class CategoryController extends Controller
 {
 
     public function index()
     {
-
-        $categories = Category::all();
-
-        return view('category.index', ['categories' => $categories]);
-
+        return view('category.index', ['categories' => Category::all()]);
     }
 
-    public function show($id)
+    public function show(Category $category)
     {
-        $category = Category::findOrFail($id);
-
-        $this->authorize('isAdmin', $category);
+        $this->authorize('show', $category);
 
         return view('category.details', ['category' => $category]);
 
@@ -30,7 +25,7 @@ class CategoryController extends Controller
 
     public function create()
     {
-        $this->authorize('isAdmin', Category::class);
+        $this->authorize('create', Category::class);
 
         return view('category.create');
 
@@ -38,52 +33,45 @@ class CategoryController extends Controller
 
     public function store(Request $request)
     {
-
         $request->validate([
             'name'=>'required'
         ]);
 
-        $category = new Category([
-            'name' => $request->get('name')
-        ]);
-        $category->save();
+        $category = Category::create($request->all());
 
-        $category->notify(new NewCategoryMail($category));
+         /**
+         * @var User
+         */
+        $user = Auth::user();
+        $user->notify(new NewCategoryMail($category));
 
-        $this->authorize('isAdmin', $category);
+        $this->authorize('store', $category);
 
         return redirect('/categories')->with('success', 'Category saved!');
     }
 
-    public function edit($id)
+    public function edit(Category $category)
     {
-        $this->authorize('isAdmin', Category::class);
+        $this->authorize('edit', Category::class);
 
-        return view('category.edit', ['category' => Category::findOrFail($id)]);
-
+        return view('category.edit', ['category' => $category]);
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, Category $category)
     {
-        $this->authorize('isAdmin', Category::class);
+        $this->authorize('update', Category::class);
 
-        $category = Category::findOrFail($id);
-        $category->name = $request->get('name');
-
-        $category->save();
+        $category->update($request->all());
 
         return redirect('/categories')->with('success', 'Category updated!');
-
     }
 
-    public function destroy($id)
+    public function destroy(Category $category)
     {
-        $this->authorize('isAdmin', Category::class);
+        $this->authorize('delete', Category::class);
 
-        $category = Category::find($id);
         $category->delete();
 
         return redirect('/categories')->with('success', 'Category deleted!');
-
     }
 }

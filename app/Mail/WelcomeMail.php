@@ -22,7 +22,7 @@ class WelcomeMail extends Mailable
      */
     public function __construct($user)
     {
-        $this->user = User::where('email',$user['email'])->first();
+        $this->user = User::where('email', $user['email'])->first();
     }
 
     /**

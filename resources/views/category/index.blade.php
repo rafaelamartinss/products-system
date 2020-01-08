@@ -3,7 +3,7 @@
 @section('content')
 <h3>Categorias</h3>
 
-@can('isAdmin', App\Category::class)
+@can('create', App\Category::class)
     <a class="btn btn-small btn-info" href="{{ URL::to('categories/create') }}">Nova Categoria</a><br><br>
 @endcan
 
@@ -16,12 +16,12 @@
 <table class="table table-striped table-bordered">
     <thead>
     <tr>
-        @can('isAdmin', App\Category::class)
+        @can('show', App\Category::class)
             <td></td>
         @endcan
         <td>ID</td>
         <td>Nome</td>
-        @can('isAdmin', App\Category::class)
+        @can('update', App\Category::class)
             <td></td>
             <td></td>
         @endcan
@@ -30,14 +30,14 @@
     <tbody>
     @foreach($categories as $key => $value)
         <tr>
-            @can('isAdmin', App\Category::class)
+            @can('show', App\Category::class)
                 <td>
                     <a class="btn btn-small btn-primary" href="{{ route('categories.show', $value->id) }}">Detalhes</a>
                 </td>
             @endcan
             <td>{{ $value->id }}</td>
             <td>{{ $value->name }}</td>
-            @can('isAdmin', App\Category::class)
+            @can('update', App\Category::class)
                 <td>
                     <a class="btn btn-small btn-info" href="{{ route('categories.edit', $value->id) }}">Editar</a>
                     <form action="{{ route('categories.destroy', $value->id)}}" method="post">

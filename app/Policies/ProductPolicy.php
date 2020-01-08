@@ -10,7 +10,27 @@ class ProductPolicy
 {
     use HandlesAuthorization;
 
-    public function isAdmin(User $user)
+    public function show(User $user)
+    {
+        return $user->is_admin === 1;
+    }
+
+    public function create(User $user)
+    {
+        return $user->is_admin === 1;
+    }
+
+    public function update(User $user)
+    {
+        return $user->is_admin === 1;
+    }
+
+    public function edit(User $user)
+    {
+        return $user->is_admin === 1;
+    }
+
+    public function delete(User $user)
     {
         return $user->is_admin === 1;
     }

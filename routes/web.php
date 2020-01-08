@@ -23,18 +23,18 @@ Route::prefix('categories')->group(function () {
     Route::get('', 'CategoryController@index')->name('categories.list');
     Route::post('', 'CategoryController@store')->name('categories.store');
     Route::get('create', 'CategoryController@create')->name('categories.create');
-    Route::get('{id}', 'CategoryController@show')->name('categories.show');
-    Route::get('{id}/edit', 'CategoryController@edit')->name('categories.edit');
-    Route::put('{id}', 'CategoryController@update')->name('categories.update');
-    Route::delete('{id}/delete', 'CategoryController@destroy')->name('categories.destroy');
+    Route::get('{category}', 'CategoryController@show')->name('categories.show');
+    Route::get('{category}/edit', 'CategoryController@edit')->name('categories.edit');
+    Route::put('{category}', 'CategoryController@update')->name('categories.update');
+    Route::delete('{category}/delete', 'CategoryController@destroy')->name('categories.destroy');
 });
 
 Route::prefix('products')->group(function () {
     Route::get('', 'ProductController@index')->name('products.list');
     Route::post('', 'ProductController@store')->name('products.store');
     Route::get('create', 'ProductController@create')->name('products.create');
-    Route::get('{id}', 'ProductController@show')->name('products.show');
-    Route::get('{id}/edit', 'ProductController@edit')->name('products.edit');
-    Route::put('{id}', 'ProductController@update')->name('products.update');
-    Route::delete('{id}/delete', 'ProductController@destroy')->name('products.destroy');
+    Route::get('{product}', 'ProductController@show')->name('products.show');
+    Route::get('{product}/edit', 'ProductController@edit')->name('products.edit');
+    Route::put('{product}', 'ProductController@update')->name('products.update');
+    Route::delete('{product}/delete', 'ProductController@destroy')->name('products.destroy');
 });

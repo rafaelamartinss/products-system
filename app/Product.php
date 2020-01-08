@@ -7,7 +7,6 @@ use Illuminate\Notifications\Notifiable;
 
 class Product extends Model
 {
-    use Notifiable;
 
     protected $fillable = [
         'name',
@@ -22,8 +21,4 @@ class Product extends Model
         return $this->belongsTo(Category::class);
     }
 
-    public function routeNotificationForSlack()
-    {
-        return 'https://hooks.slack.com/services/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';
-    }
 }

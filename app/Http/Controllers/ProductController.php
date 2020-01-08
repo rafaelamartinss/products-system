@@ -13,31 +13,26 @@ class ProductController extends Controller
 
     public function index()
     {
-
         return view('product.index', ['products' => Product::all()]);
-
     }
 
     public function show(Product $product)
     {
-        $this->authorize('isAdmin', Product::class);
+        $this->authorize('show', Product::class);
 
         return view('product.details', ['product' => $product]);
-
     }
 
     public function create()
     {
-
-        $this->authorize('isAdmin', Product::class);
+        $this->authorize('create', Product::class);
 
         return view('product.create', ['categories' => Category::all()]);
-
     }
 
     public function store(Request $request)
     {
-        $this->authorize('isAdmin', Product::class);
+        $this->authorize('store', Product::class);
 
         $request->validate([
             'name'=>'required',
@@ -59,31 +54,26 @@ class ProductController extends Controller
 
     public function edit(Product $product)
     {
-        $this->authorize('isAdmin', Product::class);
+        $this->authorize('edit', Product::class);
 
         return view('product.edit', ['product' => $product, 'categories' => Category::all()]);
-
     }
 
     public function update(Request $request, Product $product)
     {
-
-        $this->authorize('isAdmin', Product::class);
+        $this->authorize('update', Product::class);
 
         $product->update($request->all());
 
         return redirect('/products')->with('success', 'Product updated!');
-
     }
 
     public function destroy(Product $product)
     {
-
-        $this->authorize('isAdmin', Product::class);
+        $this->authorize('delete', Product::class);
 
         $product->delete();
 
         return redirect('/products')->with('success', 'Product deleted!');
-
     }
 }
