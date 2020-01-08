@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Category;
-use App\Notifications\NewProductSlack;
 use App\Product;
+use App\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Notifications\NewProduct;
 
 class ProductController extends Controller
 {
@@ -13,17 +14,15 @@ class ProductController extends Controller
     public function index()
     {
 
-        $products = Product::all();
-
-        return view('product.index', ['products' => $products]);
+        return view('product.index', ['products' => Product::all()]);
 
     }
 
-    public function show($id)
+    public function show(Product $product)
     {
         $this->authorize('isAdmin', Product::class);
 
-        return view('product.details', ['product' => Product::findOrFail($id)]);
+        return view('product.details', ['product' => $product]);
 
     }
 
@@ -32,9 +31,7 @@ class ProductController extends Controller
 
         $this->authorize('isAdmin', Product::class);
 
-        $categories = Category::all();
-
-        return view('product.create', ['categories' => $categories]);
+        return view('product.create', ['categories' => Category::all()]);
 
     }
 
@@ -49,51 +46,41 @@ class ProductController extends Controller
             'category_id'=>'required',
         ]);
 
-        $category = Category::findOrFail($request->get('category_id'));
+        $product = Product::create($request->all());
 
-        $product = new Product([
-            'name' => $request->get('name'),
-            'value' => $request->get('value'),
-            'quantity' => $request->get('quantity')
-        ]);
-
-        $category->products()->save($product);
-        $product->notify(new NewProductSlack($product));
+        /**
+         * @var User
+         */
+        $user = Auth::user();
+        $user->notify(new NewProduct($product));
 
         return redirect('/products')->with('success', 'Product saved!');
     }
 
-    public function edit($id)
+    public function edit(Product $product)
     {
         $this->authorize('isAdmin', Product::class);
 
-        $categories = Category::all();
-        $product = Product::findOrFail($id);
-
-        return view('product.edit', ['product' => $product, 'categories' => $categories]);
+        return view('product.edit', ['product' => $product, 'categories' => Category::all()]);
 
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, Product $product)
     {
 
         $this->authorize('isAdmin', Product::class);
 
-        $product = Product::findOrFail($id);
-        $product->name = $request->get('name');
-
-        $product->save();
+        $product->update($request->all());
 
         return redirect('/products')->with('success', 'Product updated!');
 
     }
 
-    public function destroy($id)
+    public function destroy(Product $product)
     {
 
         $this->authorize('isAdmin', Product::class);
 
-        $product = Product::find($id);
         $product->delete();
 
         return redirect('/products')->with('success', 'Product deleted!');
