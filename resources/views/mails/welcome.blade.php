@@ -1,1 +1,1 @@
-<h3>Bem-vindo(a), !</h3>
+<h3>Bem-vindo(a), {{$user->name}}!</h3>

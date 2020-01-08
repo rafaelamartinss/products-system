@@ -18,7 +18,6 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/send-email', 'HomeController@sendNotification');
 
 Route::prefix('categories')->group(function () {
     Route::get('', 'CategoryController@index')->name('categories.list');
