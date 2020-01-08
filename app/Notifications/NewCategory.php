@@ -2,13 +2,11 @@
 
 namespace App\Notifications;
 
-use App\Mail\NewCategoryMail as MailNewCategoryMail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class NewCategoryMail extends Notification
+class NewCategory extends Notification
 {
     use Queueable;
     public $category;

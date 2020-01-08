@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Category;
 use Illuminate\Http\Request;
-use App\Notifications\NewCategoryMail;
+use App\Notifications\NewCategory;
 use Illuminate\Support\Facades\Auth;
 
 class CategoryController extends Controller
@@ -43,7 +43,7 @@ class CategoryController extends Controller
          * @var User
          */
         $user = Auth::user();
-        $user->notify(new NewCategoryMail($category));
+        $user->notify(new NewCategory($category));
 
         $this->authorize('store', $category);
 

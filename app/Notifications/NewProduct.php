@@ -2,12 +2,12 @@
 
 namespace App\Notifications;
 
+use App\Product;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\SlackMessage;
 
-class NewProductSlack extends Notification
+class NewProduct extends Notification
 {
     use Queueable;
 
@@ -18,7 +18,7 @@ class NewProductSlack extends Notification
      *
      * @return void
      */
-    public function __construct($product)
+    public function __construct(Product $product)
     {
         $this->product = $product;
     }
