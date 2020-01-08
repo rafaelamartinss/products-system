@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Category;
+use App\Notifications\NewCategoryMail;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -46,6 +47,8 @@ class CategoryController extends Controller
             'name' => $request->get('name')
         ]);
         $category->save();
+
+        $category->notify(new NewCategoryMail($category));
 
         $this->authorize('isAdmin', $category);
 
