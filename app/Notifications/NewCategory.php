@@ -2,16 +2,19 @@
 
 namespace App\Notifications;
 
+use App\Category;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class NewCategory extends Notification
+class NewCategory extends Notification implements ShouldQueue
 {
     use Queueable;
+
     public $category;
 
-    public function __construct($category)
+    public function __construct(Category $category)
     {
         $this->category = $category;
     }

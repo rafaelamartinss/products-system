@@ -5,9 +5,10 @@ namespace App\Notifications;
 use App\Product;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\SlackMessage;
 
-class NewProduct extends Notification
+class NewProduct extends Notification implements ShouldQueue
 {
     use Queueable;
 
