@@ -6,6 +6,8 @@ use App\Product;
 use App\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
+
 use App\Notifications\NewProduct;
 
 class ProductController extends Controller
@@ -13,7 +15,11 @@ class ProductController extends Controller
 
     public function index()
     {
-        return view('product.index', ['products' => Product::all()]);
+        $products = Cache::remember('products', 5*60, function() {
+            return Product::all();
+        });
+
+        return view('product.index', ['products' => $products]);
     }
 
     public function show(Product $product)
@@ -49,7 +55,7 @@ class ProductController extends Controller
         $user = Auth::user();
         $user->notify(new NewProduct($product));
 
-        return redirect('/products')->with('success', 'Product saved!');
+        return redirect('/products');
     }
 
     public function edit(Product $product)
@@ -65,7 +71,7 @@ class ProductController extends Controller
 
         $product->update($request->all());
 
-        return redirect('/products')->with('success', 'Product updated!');
+        return redirect('/products');
     }
 
     public function destroy(Product $product)
@@ -74,6 +80,6 @@ class ProductController extends Controller
 
         $product->delete();
 
-        return redirect('/products')->with('success', 'Product deleted!');
+        return redirect('/products');
     }
 }

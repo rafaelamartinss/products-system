@@ -6,13 +6,18 @@ use App\Category;
 use Illuminate\Http\Request;
 use App\Notifications\NewCategory;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
 class CategoryController extends Controller
 {
 
     public function index()
     {
-        return view('category.index', ['categories' => Category::all()]);
+        $categories = Cache::remember('categories', 5*60, function() {
+            return Category::all();
+        });
+
+        return view('category.index', ['categories' => $categories]);
     }
 
     public function show(Category $category)
@@ -47,7 +52,7 @@ class CategoryController extends Controller
 
         $this->authorize('store', $category);
 
-        return redirect('/categories')->with('success', 'Category saved!');
+        return redirect('/categories');
     }
 
     public function edit(Category $category)
@@ -63,7 +68,7 @@ class CategoryController extends Controller
 
         $category->update($request->all());
 
-        return redirect('/categories')->with('success', 'Category updated!');
+        return redirect('/categories');
     }
 
     public function destroy(Category $category)
@@ -72,6 +77,6 @@ class CategoryController extends Controller
 
         $category->delete();
 
-        return redirect('/categories')->with('success', 'Category deleted!');
+        return redirect('/categories');
     }
 }
